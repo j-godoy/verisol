@@ -27,7 +27,7 @@ namespace VeriSolRunner
             ExternalToolsManager.EnsureAllExisted();
 
             string solidityFile, entryPointContractName;
-            bool tryProofFlag, tryRefutation;
+            bool tryProofFlag, tryRefutation, trackAllVars;
             int recursionBound;
             ILogger logger;
             HashSet<Tuple<string, string>> ignoredMethods;
@@ -39,6 +39,7 @@ namespace VeriSolRunner
                 out tryProofFlag,
                 out tryRefutation,
                 out recursionBound,
+                out trackAllVars,
                 out logger,
                 out ignoredMethods,
                 out printTransactionSequence, 
@@ -49,6 +50,7 @@ namespace VeriSolRunner
                     Path.Combine(Directory.GetCurrentDirectory(), solidityFile), 
                     entryPointContractName,
                     recursionBound,
+                    trackAllVars,
                     ignoredMethods,
                     tryRefutation,
                     tryProofFlag,
@@ -77,6 +79,7 @@ namespace VeriSolRunner
             Console.WriteLine("   /noTxSeq                don't print the transaction sequence on console, default: false");
             Console.WriteLine("   /contractInfer          perform Houdini based module invariant inference, default off");
             Console.WriteLine("   /inlineDepth:k          inline nested calls upto depth k when performing modular proof and inference, default 4");
+            Console.WriteLine("   /trackAllVars           Corral parameter-Track all shared variables.");
 
 
             Console.WriteLine("\n------ Controls translation --------\n");

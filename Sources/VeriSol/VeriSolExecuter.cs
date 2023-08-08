@@ -33,12 +33,13 @@ namespace VeriSolRunner
         private readonly string corralTraceFileName = "corral_out_trace.txt";
         private readonly string counterexampleFileName = "corral_counterex.txt";
         private readonly int CorralRecursionLimit;
+        private readonly bool trackAllVars;
         private readonly int CorralContextBound = 1; // always 1 for solidity
         private HashSet<Tuple<string, string>> ignoreMethods;
         private TranslatorFlags translatorFlags;
         private bool printTransactionSequence = false; 
 
-        public VeriSolExecutor(string solidityFilePath, string contractName, int corralRecursionLimit, HashSet<Tuple<string, string>> ignoreMethods, bool tryRefutation, bool tryProofFlag, ILogger logger, bool _printTransactionSequence, TranslatorFlags _translatorFlags = null)
+        public VeriSolExecutor(string solidityFilePath, string contractName, int corralRecursionLimit, bool trackAllVars, HashSet<Tuple<string, string>> ignoreMethods, bool tryRefutation, bool tryProofFlag, ILogger logger, bool _printTransactionSequence, TranslatorFlags _translatorFlags = null)
         {
             this.SolidityFilePath = solidityFilePath;
             this.ContractName = contractName;
@@ -48,6 +49,7 @@ namespace VeriSolRunner
             this.BoogiePath = ExternalToolsManager.Boogie.Command;
             this.SolcPath = ExternalToolsManager.Solc.Command;
             this.CorralRecursionLimit = corralRecursionLimit;
+            this.trackAllVars = trackAllVars;
             this.ignoreMethods = new HashSet<Tuple<string, string>>(ignoreMethods);
             this.Logger = logger;
             this.TryProof = tryProofFlag;
@@ -143,6 +145,8 @@ namespace VeriSolRunner
                 $"/recursionBound:{CorralRecursionLimit}",
                 // context bound (k)
                 $"/k:{CorralContextBound}",
+                // trackAllVars
+                (trackAllVars) ? $"/trackAllVars" : "",
                 // main method
                 $"/main:CorralEntry_{ContractName}",
                 // printing info

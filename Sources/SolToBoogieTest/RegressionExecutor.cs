@@ -132,7 +132,7 @@ namespace SolToBoogieTest
         private void ParseTranslatorFlags(TranslatorFlags translatorFlags, string args)
         {
             string solidityFile, entryPointContractName;
-            bool tryProofFlag, tryRefutation;
+            bool tryProofFlag, tryRefutation, trackAllVars;
             int recursionBound;
             ILogger logger;
             HashSet<Tuple<string, string>> ignoredMethods;
@@ -144,6 +144,7 @@ namespace SolToBoogieTest
             out tryProofFlag,
             out tryRefutation,
             out recursionBound,
+            out trackAllVars,
             out logger,
             out ignoredMethods,
             out printTransactionSequence,

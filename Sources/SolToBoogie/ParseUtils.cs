@@ -13,7 +13,7 @@ namespace SolToBoogie
     public static class ParseUtils
     {
         // TODO: extract into a VerificationFlags structure 
-        public static void ParseCommandLineArgs(string[] args, out string solidityFile, out string entryPointContractName, out bool tryProofFlag, out bool tryRefutation, out int recursionBound, out ILogger logger, out HashSet<Tuple<string, string>> ignoredMethods, out bool printTransactionSeq, ref TranslatorFlags translatorFlags)
+        public static void ParseCommandLineArgs(string[] args, out string solidityFile, out string entryPointContractName, out bool tryProofFlag, out bool tryRefutation, out int recursionBound, out bool trackAllVars, out ILogger logger, out HashSet<Tuple<string, string>> ignoredMethods, out bool printTransactionSeq, ref TranslatorFlags translatorFlags)
         {
             //Console.WriteLine($"Command line args = {{{string.Join(", ", args.ToList())}}}");
             solidityFile = args[0];
@@ -31,6 +31,8 @@ namespace SolToBoogie
                 recursionBound = int.Parse(txBounds.First().Substring("/txBound:".Length));
                 Debug.Assert(recursionBound > 0, $"Argument of /txBound:k should be positive, found {recursionBound}");
             }
+
+            trackAllVars = args.Any(x => x.Equals("/trackAllVars"));
 
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole()); //  new LoggerFactory().AddConsole(LogLevel.Information);
             logger = loggerFactory.CreateLogger("VeriSol");
